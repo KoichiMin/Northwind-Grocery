@@ -1,20 +1,70 @@
 "use strict"
 
+const categoryDropdown = document.getElementById("categoryDropdown");
+let categoryArray = [];
 window.onload = () =>{
     const dropdown = document.getElementById("dropdown");
     
     dropdown.addEventListener('change', () => {
         const selectedValue = dropdown.value;
-        console.log('Selected value:', selectedValue);
-        // console.log(selectedValue == "ViewAll")
         if(selectedValue == "viewAll"){
             displayAllProducts()
+        } 
+        else if(selectedValue == "category"){
+            displayNewDropdown()
+            // console.log(categoryArray)
         }
+    
     });
+
+    categoryDropdown.addEventListener('change', () =>{
+        const selectedValue = categoryDropdown.value;
+
+        categoryArray[0].forEach(category =>{            
+            if(category.name == selectedValue){
+                displayCategoryProducts(category.categoryId)
+            }
+        })
+    })
 }
 
 
+const displayNewDropdown = () =>{
+    categoryDropdown.style.display = "block";
+    fetch("http://localhost:8081/api/categories")
+        .then(res => res.json())
+        .then(data => {
+            categoryArray.push(data)
+            data.forEach(category => {
+                const option = document.createElement("option");
+                
+                option.textContent = category.name;
+                categoryDropdown.appendChild(option);
+            });
+        })
+        
+}
+
+const displayCategoryProducts = (number) =>{
+    cardContainer.innerHTML = "";
+    fetch("http://localhost:8081/api/products")
+    .then(res => res.json())
+    .then(data =>{
+        data.forEach(product =>{
+            if(product.categoryId == number){
+
+                displaySingleProduct(product)
+            }
+        })
+    })
+    
+}
+
+
+
 const displayAllProducts = () =>{
+    cardContainer.innerHTML = "";
+    categoryDropdown.style.display = "none";
     fetch("http://localhost:8081/api/products")
     .then(res => res.json())
     .then(data =>{
@@ -27,7 +77,8 @@ const displayAllProducts = () =>{
 
 
 const cardContainer = document.getElementById("cardContainer");
-const card = document.createElement("div");
+// const card = document.createElement("div");
+
 
 const displaySingleProduct = (product) => {
     const cardContainer = document.getElementById("cardContainer");
@@ -35,7 +86,7 @@ const displaySingleProduct = (product) => {
     const card = document.createElement("div");
     card.classList.add("card");
     card.style.width = "18rem";
-    card.style.marginBottom = "20px"; // Add some margin between cards
+    card.style.marginBottom = "20px"; 
 
     const cardBody = document.createElement("div");
     cardBody.classList.add("card-body");
