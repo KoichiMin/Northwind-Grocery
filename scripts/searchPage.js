@@ -112,6 +112,9 @@ const displaySingleProduct = (product) => {
     seeDetails.textContent = "See Details";
     seeDetails.href = "details.html"; 
     seeDetails.target = "_blank";
+    seeDetails.onclick = () => {
+        localStorage.setItem("product", JSON.stringify(product));
+    };
 
     cardBody.appendChild(title);
     cardBody.appendChild(subtitle);
