@@ -110,11 +110,11 @@ const displaySingleProduct = (product) => {
     const seeDetails = document.createElement("a");
     seeDetails.classList.add("card-link");
     seeDetails.textContent = "See Details";
-    seeDetails.href = "details.html"; 
+    seeDetails.href = `details.html?productid=${product.productId}`; 
     seeDetails.target = "_blank";
-    seeDetails.onclick = () => {
-        localStorage.setItem("product", JSON.stringify(product));
-    };
+    // seeDetails.onclick = () => {
+    //     localStorage.setItem("product", JSON.stringify(product));
+    // };
 
     cardBody.appendChild(title);
     cardBody.appendChild(subtitle);
